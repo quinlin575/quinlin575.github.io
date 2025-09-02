@@ -1,182 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quinlin Neuhaus</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quinlin Neuhaus</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
 
-        body {
-            font-family: 'Roboto Slab', serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            background-color: #f4f4f4;
-            color: #000;
-        }
+    body {
+      font-family: 'Roboto Slab', serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background-color: #f4f4f4;
+      color: #000;
+    }
 
-        header {
-            background: linear-gradient(180deg, #154734, #267e5c);
-            color: #fff;
-            padding: 40px 20px;
-            text-align: center;
-        }
+    header {
+      background: linear-gradient(135deg, #154734, #1d6048);
+      color: #fff;
+      padding: 40px 20px;
+      text-align: center;
+    }
 
-        nav {
-            background-color: #444;
-            display: flex;
-            justify-content: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* shadow under nav */
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+    nav {
+      background-color: #444;
+      display: flex;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 15px 20px;
-            display: block;
-            transition: background 0.3s ease;
-        }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      padding: 15px 20px;
+      display: block;
+      transition: background 0.3s ease;
+    }
 
-        nav a:hover {
-            background-color: #555;
-        }
+    nav a:hover {
+      background-color: #555;
+    }
 
-        .container {
-            max-width: 960px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
+    .container {
+      max-width: 960px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
 
-        section {
-            background-color: #fff;
-            margin-bottom: 30px;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            opacity: 0;
-            transform: translateY(30px);
-            animation: slideUp 0.8s ease forwards;
-        }
+    section {
+      background-color: #fff;
+      margin-bottom: 30px;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
 
-        /* Staggered animation effect */
-        section:nth-child(1) { animation-delay: 0.2s; }
-        section:nth-child(2) { animation-delay: 0.4s; }
-        section:nth-child(3) { animation-delay: 0.6s; }
-        section:nth-child(4) { animation-delay: 0.8s; }
+    section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .resume-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #154734, #1d6048);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        .resume-btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #154734, #1d6048);
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+    .resume-btn:hover {
+      background: linear-gradient(135deg, #1d6048, #154734);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
 
-        .resume-btn:hover {
-            background: linear-gradient(135deg, #1d6048, #154734);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        footer {
-            background: linear-gradient(360deg, #154734, #267e5c);
-            text-align: center;
-            padding: 10px;
-            color: #fff;
-            margin-top: 40px;
-        }
-    </style>
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #154734;
+      color: #fff;
+      margin-top: 40px;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Hi, I'm Quinlin Neuhaus</h1>
-        <h2>Missouri S&T Senior | Aspiring Actuary | Statistics Enthusiast</h2>
-    </header>
+  <header>
+    <h1>Hi, I'm Quinlin Neuhaus</h1>
+    <h2>Missouri S&T Senior | Aspiring Actuary | Statistics Enthusiast</h2>
+  </header>
 
-    <nav>
-        <a href="#about">About</a>
-        <a href="#soa">SOA Exams</a>
-        <a href="#resume">Resume</a>
-        <a href="#contact">Contact</a>
-    </nav>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#soa">SOA Exams</a>
+    <a href="#resume">Resume</a>
+    <a href="#contact">Contact</a>
+  </nav>
 
-    <div class="container">
-        <section id="about">
-            <h2>About Me</h2>
-            <p>I am currently in the last semester of my undergrad at Missouri S&T double majoring in Applied Math with an emphasis in Actuarial Science and Economics. I start grad school this spring and hope to finish my M.S. Applied Math Fall 2026. In the mean time, I am working on SOA exams to earn my ASA designation. From my coursework, I have a strong statistical and modeling background, and hope to continue to expand my knowledge in machine learning, financial math, and data analysis. I currently have completed three exams: P, FM, and SRM, and plan to take FAM next. I am looking for summer internships for 2026 and/or part time interships for spring 2026. </p>
-        </section>
+  <div class="container">
+    <section id="about">
+      <h2>About Me</h2>
+      <p>I am currently in the last semester of my undergrad at Missouri S&T double majoring in Applied Math with an emphasis in Actuarial Science and Economics. I start grad school this spring and hope to finish my M.S. Applied Math Fall 2026. In the mean time, I am working on SOA exams to earn my ASA designation. From my coursework, I have a strong statistical and modeling background, and hope to continue to expand my knowledge in machine learning, financial math, and data analysis. I currently have completed three exams: P, FM, and SRM, and plan to take FAM next. I am looking for summer internships for 2026 and/or part time interships for spring 2026. </p>
+    </section>
 
-        <section id="soa">
-            <h2>SOA Exams</h2>
-            <ul>
-                <li>SOA Exam P Passed, Scored: 9 Jan 2025</li>
-                <li>SOA Exam FM Passed, Scored: 9 Feb 2025</li>
-                <li>SOA Exam SRM Passed (Preliminary) Sep 2025</li>
-            </ul>
-        </section>
+    <section id="soa">
+      <h2>SOA Exams</h2>
+      <ul>
+        <li>SOA Exam P Passed, Scored: 9 Jan 2025</li>
+        <li>SOA Exam FM Passed, Scored: 9 Feb 2025</li>
+        <li>SOA Exam SRM Passed (Preliminary) Sep 2025</li>
+      </ul>
+    </section>
 
-        <section id="resume">
-            <h2>Resume</h2>
-            <p>You can download my resume below:</p>
-            <a href="QuinlinResumeFall2025.pdf" download class="resume-btn">📄 Download Resume</a>
-        </section>
+    <section id="resume">
+      <h2>Resume</h2>
+      <p>You can download my resume below:</p>
+      <a href="QuinlinResumeFall2025.pdf" download class="resume-btn">📄 Download Resume</a>
+    </section>
 
-        <section id="contact">
-            <h2>Contact</h2>
+    <section id="contact">
+      <h2>Contact</h2>
 
-            <a href="tel:+16308037712" style="text-decoration:none; color:#000; display:inline-flex; align-items:center; margin-bottom:8px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#44E347" viewBox="0 0 24 24" style="margin-right:5px;">
-                    <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21 11.72 11.72 0 003.7.59 1 1 0 011 1v3.5a1 1 0 01-1 1A16 16 0 014 5a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.7 1 1 0 01-.21 1.11l-2.26 2.26z"/>
-                </svg>
-                (630)-803-7712
-            </a><br>
+      <a href="tel:+16308037712" style="text-decoration:none; color:#000; display:inline-flex; align-items:center; margin-bottom:8px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#44E347" viewBox="0 0 24 24" style="margin-right:5px;">
+          <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21 11.72 11.72 0 003.7.59 1 1 0 011 1v3.5a1 1 0 01-1 1A16 16 0 014 5a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.7 1 1 0 01-.21 1.11l-2.26 2.26z"/>
+        </svg>
+        (630)-803-7712
+      </a><br>
 
-            <a href="mailto:quinlin.neuhaus@comcast.net" style="text-decoration:none; color:#000; display:inline-flex; align-items:center; margin-bottom:8px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ff0000" viewBox="0 0 24 24" style="margin-right:5px;">
-                    <path d="M20 4H4c-1.104 0-2 .896-2 2v12c0 1.104.896 2 2 2h16c1.104 0 2-.896 2-2V6c0-1.104-.896-2-2-2zm0 2l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/>
-                </svg>
-                quinlin.neuhaus@comcast.net
-            </a><br>
+      <a href="mailto:quinlin.neuhaus@comcast.net" style="text-decoration:none; color:#000; display:inline-flex; align-items:center; margin-bottom:8px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ff0000" viewBox="0 0 24 24" style="margin-right:5px;">
+          <path d="M20 4H4c-1.104 0-2 .896-2 2v12c0 1.104.896 2 2 2h16c1.104 0 2-.896 2-2V6c0-1.104-.896-2-2-2zm0 2l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/>
+        </svg>
+        quinlin.neuhaus@comcast.net
+      </a><br>
 
-            <a href="https://www.linkedin.com/in/quinlin-neuhaus-952131293/" target="_blank" style="text-decoration:none; color:#000; display:inline-flex; align-items:center;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#0A66C2" viewBox="0 0 24 24" style="margin-right:5px;">
-                    <path d="M19 0h-14c-2.761 0-5 2.238-5 5v14c0 2.762 2.239 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.762-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.5c0-1.379-1.121-2.5-2.5-2.5s-2.5 1.121-2.5 2.5v5.5h-3v-10h3v1.285c.764-1.181 2.379-1.785 3.5-1.785 2.481 0 4.5 2.019 4.5 4.5v6z"/>
-                </svg>
-                &nbspLinkedIn
-            </a>
-        </section>
-    </div>
+      <a href="https://www.linkedin.com/in/quinlin-neuhaus-952131293/" target="_blank" style="text-decoration:none; color:#000; display:inline-flex; align-items:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#0A66C2" viewBox="0 0 24 24" style="margin-right:5px;">
+          <path d="M19 0h-14c-2.761 0-5 2.238-5 5v14c0 2.762 2.239 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.762-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.5c0-1.379-1.121-2.5-2.5-2.5s-2.5 1.121-2.5 2.5v5.5h-3v-10h3v1.285c.764-1.181 2.379-1.785 3.5-1.785 2.481 0 4.5 2.019 4.5 4.5v6z"/>
+        </svg>
+        &nbspLinkedIn
+      </a>
+    </section>
+  </div>
 
-    <footer>
-        2025 Quinlin Neuhaus
-    </footer>
+  <footer>
+    2025 Quinlin Neuhaus
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll("section");
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          observer.unobserve(entry.target); // animate once
+        }
+      });
+    }, { threshold: 0.2 });
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+  </script>
 </body>
 </html>
