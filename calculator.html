@@ -84,7 +84,7 @@
       if (calcType.value === "level") {
         inputsDiv.innerHTML = `
           <label>Payment (PMT): <input type="number" id="pmt"></label>
-          <label>Interest Rate (i): <input type="number" step="0.0001" id="rate"></label>
+          <label>Interest Rate (i): <input type="number" step="0.001" id="rate"></label>
           <label>Number of Periods (n): <input type="number" id="n"></label>
           <label>Perpetuity</label>
           <input type="checkbox" id="perpetuity">
@@ -98,8 +98,8 @@
       } else if (calcType.value === "arithmetic") {
         inputsDiv.innerHTML = `
           <label>First Payment (P): <input type="number" id="pmt"></label>
-          <label>Common Difference (d): <input type="number" id="diff"></label>
-          <label>Interest Rate (i): <input type="number" step="0.0001" id="rate"></label>
+          <label>Common Difference (Q): <input type="number" id="diff"></label>
+          <label>Interest Rate (i): <input type="number" step="0.001" id="rate"></label>
           <label>Number of Periods (n): <input type="number" id="n"></label>
           <label>Perpetuity</label>
           <input type="checkbox" id="perpetuity">
@@ -113,8 +113,8 @@
       } else if (calcType.value === "geometric") {
         inputsDiv.innerHTML = `
           <label>First Payment (P): <input type="number" id="pmt"></label>
-          <label>Common Ratio (r): <input type="number" step="0.01" id="ratio"></label>
-          <label>Interest Rate (i): <input type="number" step="0.0001" id="rate"></label>
+          <label>Common Ratio (k): <input type="number" step="0.01" id="ratio"></label>
+          <label>Interest Rate (i): <input type="number" step="0.001" id="rate"></label>
           <label>Number of Periods (n): <input type="number" id="n"></label>
           <label>Perpetuity</label>
           <input type="checkbox" id="perpetuity">
