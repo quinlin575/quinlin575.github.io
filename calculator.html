@@ -22,7 +22,7 @@
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      max-width: 600px;
+      max-width: 650px;
       margin: auto;
     }
     label, select, input {
@@ -57,8 +57,9 @@
     <label for="calcType">Choose a calculation:</label>
     <select id="calcType">
       <option value="">-- Select --</option>
-      <option value="fv">Future Value of an Annuity</option>
-      <option value="pv">Present Value of an Annuity</option>
+      <option value="level">Level Annuity/Perpetuity</option>
+      <option value="arithmetic">Arithmetic Annuity/Perpetuity</option>
+      <option value="geometric">Geometric Annuity/Perpetuity</option>
     </select>
 
     <div id="inputs"></div>
@@ -80,37 +81,119 @@
       result.textContent = '';
       calcBtn.style.display = 'none';
 
-      if (calcType.value === 'fv') {
+      if (calcType.value === "level") {
         inputsDiv.innerHTML = `
           <label>Payment (PMT): <input type="number" id="pmt"></label>
-          <label>Interest Rate (i): <input type="number" step="0.01" id="rate"></label>
+          <label>Interest Rate (i): <input type="number" step="0.0001" id="rate"></label>
           <label>Number of Periods (n): <input type="number" id="n"></label>
+          <label>Perpetuity</label>
+          <input type="checkbox" id="perpetuity">
+          <label for="annuityType">Annuity Immediate/Due</label>
+          <select id="annuityType">
+            <option value="immediate" selected>Annuity Immediate</option>
+            <option value="due">Annuity Due</option>
+          </select>
         `;
         calcBtn.style.display = 'block';
-      } else if (calcType.value === 'pv') {
+      } else if (calcType.value === "arithmetic") {
         inputsDiv.innerHTML = `
-          <label>Payment (PMT): <input type="number" id="pmt"></label>
-          <label>Interest Rate (i): <input type="number" step="0.01" id="rate"></label>
+          <label>First Payment (P): <input type="number" id="pmt"></label>
+          <label>Common Difference (d): <input type="number" id="diff"></label>
+          <label>Interest Rate (i): <input type="number" step="0.0001" id="rate"></label>
           <label>Number of Periods (n): <input type="number" id="n"></label>
+          <label>Perpetuity</label>
+          <input type="checkbox" id="perpetuity">
+          <label for="annuityType">Annuity Immediate/Due</label>
+          <select id="annuityType">
+            <option value="immediate" selected>Annuity Immediate</option>
+            <option value="due">Annuity Due</option>
+          </select>
         `;
         calcBtn.style.display = 'block';
-      } 
+      } else if (calcType.value === "geometric") {
+        inputsDiv.innerHTML = `
+          <label>First Payment (P): <input type="number" id="pmt"></label>
+          <label>Common Ratio (r): <input type="number" step="0.01" id="ratio"></label>
+          <label>Interest Rate (i): <input type="number" step="0.0001" id="rate"></label>
+          <label>Number of Periods (n): <input type="number" id="n"></label>
+          <label>Perpetuity</label>
+          <input type="checkbox" id="perpetuity">
+          <label for="annuityType">Annuity Immediate/Due</label>
+          <select id="annuityType">
+            <option value="immediate" selected>Annuity Immediate</option>
+            <option value="due">Annuity Due</option>
+          </select>
+        `;
+        calcBtn.style.display = 'block';
+      }
     });
 
     calcBtn.addEventListener('click', () => {
-      let output = '';
+      result.textContent = "";
+      const type = calcType.value;
+      const perpetuity = document.getElementById('perpetuity')?.checked || false;
+      const annuityType = document.getElementById('annuityType')?.value || "immediate";
       const i = parseFloat(document.getElementById('rate')?.value) || 0;
-      const n = parseInt(document.getElementById('n')?.value) || 0;
+      const n = perpetuity ? Infinity : (parseInt(document.getElementById('n')?.value) || 0);
 
-      if (calcType.value === 'fv') {
-        const pmt = parseFloat(document.getElementById('pmt').value);
-        output = pmt * ((Math.pow(1 + i, n) - 1) / i);
-        result.textContent = "Future Value = " + output.toFixed(2);
-      } else if (calcType.value === 'pv') {
-        const pmt = parseFloat(document.getElementById('pmt').value);
-        output = pmt * ((1 - Math.pow(1 + i, -n)) / i);
-        result.textContent = "Present Value = " + output.toFixed(2);
-      } 
+      let PV = 0, FV = 0;
+
+      if (type === "level") {
+        const PMT = parseFloat(document.getElementById('pmt').value);
+        if (perpetuity) {
+          PV = PMT / i;
+          FV = Infinity;
+        } else {
+          PV = PMT * (1 - Math.pow(1+i, -n)) / i;
+          FV = PMT * (Math.pow(1+i, n) - 1) / i;
+        }
+      } else if (type === "arithmetic") {
+        const P = parseFloat(document.getElementById('pmt').value);
+        const d = parseFloat(document.getElementById('diff').value);
+        if (perpetuity) {
+          PV = "Diverges (arithmetic perpetuity not finite)";
+          FV = "Diverges";
+        } else {
+          let PVseries = 0, FVseries = 0;
+          for (let k=1;k<=n;k++) {
+            let payment = P + (k-1)*d;
+            PVseries += payment / Math.pow(1+i, k);
+            FVseries += payment * Math.pow(1+i, n-k);
+          }
+          PV = PVseries;
+          FV = FVseries;
+        }
+      } else if (type === "geometric") {
+        const P = parseFloat(document.getElementById('pmt').value);
+        const r = parseFloat(document.getElementById('ratio').value);
+        if (perpetuity) {
+          if (r < 1+i) {
+            PV = P / (1 - (1+r)/(1+i));
+            FV = "Infinity";
+          } else {
+            PV = "Diverges";
+            FV = "Diverges";
+          }
+        } else {
+          let PVseries = 0, FVseries = 0;
+          for (let k=1;k<=n;k++) {
+            let payment = P * Math.pow(1+r, k-1);
+            PVseries += payment / Math.pow(1+i, k);
+            FVseries += payment * Math.pow(1+i, n-k);
+          }
+          PV = PVseries;
+          FV = FVseries;
+        }
+      }
+
+      // adjust for annuity due
+      if (annuityType === "due" && !perpetuity && typeof PV === "number" && typeof FV === "number") {
+        PV *= (1+i);
+        FV *= (1+i);
+      }
+
+      result.innerHTML = `<strong>Present Value:</strong> ${typeof PV === "number" ? PV.toFixed(2) : PV} <br>
+                          <strong>Future Value:</strong> ${typeof FV === "number" ? FV.toFixed(2) : FV}`;
     });
   </script>
 </body>
