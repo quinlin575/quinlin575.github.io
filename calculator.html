@@ -83,8 +83,8 @@
 
       if (calcType.value === "level") {
         inputsDiv.innerHTML = `
-          <label>Payment (PMT): <input type="number" id="pmt"></label>
-          <label>Interest Rate (i): <input type="number" step="0.001" id="rate"></label>
+          <label>Payment Per Period (P): <input type="number" id="pmt"></label>
+          <label>Effective Interest Rate Per Period (i): <input type="number" step="0.001" id="rate"></label>
           <label>Number of Periods (n): <input type="number" id="n"></label>
           <label>Perpetuity</label>
           <input type="checkbox" id="perpetuity">
@@ -98,8 +98,8 @@
       } else if (calcType.value === "arithmetic") {
         inputsDiv.innerHTML = `
           <label>First Payment (P): <input type="number" id="pmt"></label>
-          <label>Common Difference (Q): <input type="number" id="diff"></label>
-          <label>Interest Rate (i): <input type="number" step="0.001" id="rate"></label>
+          <label>Common Difference Between Payments (Q): <input type="number" id="diff"></label>
+          <label>Effective Interest Rate Per Period (i): <input type="number" step="0.001" id="rate"></label>
           <label>Number of Periods (n): <input type="number" id="n"></label>
           <label>Perpetuity</label>
           <input type="checkbox" id="perpetuity">
@@ -113,8 +113,8 @@
       } else if (calcType.value === "geometric") {
         inputsDiv.innerHTML = `
           <label>First Payment (P): <input type="number" id="pmt"></label>
-          <label>Common Ratio (k): <input type="number" step="0.01" id="ratio"></label>
-          <label>Interest Rate (i): <input type="number" step="0.001" id="rate"></label>
+          <label>Common Ratio Between Payments (k): <input type="number" step="0.01" id="ratio"></label>
+          <label>Effective Interest Rate Per Period (i): <input type="number" step="0.001" id="rate"></label>
           <label>Number of Periods (n): <input type="number" id="n"></label>
           <label>Perpetuity</label>
           <input type="checkbox" id="perpetuity">
@@ -139,50 +139,43 @@
       let PV = 0, FV = 0;
 
       if (type === "level") {
-        const PMT = parseFloat(document.getElementById('pmt').value);
+        const P = parseFloat(document.getElementById('pmt').value);
         if (perpetuity) {
-          PV = PMT / i;
+          PV = P / i;
           FV = Infinity;
         } else {
-          PV = PMT * (1 - Math.pow(1+i, -n)) / i;
-          FV = PMT * (Math.pow(1+i, n) - 1) / i;
+          PV = P * (1 - Math.pow(1+i, -n)) / i;
+          FV = PV * Math.pow(1+i, n);
         }
       } else if (type === "arithmetic") {
-        const P = parseFloat(document.getElementById('pmt').value);
-        const d = parseFloat(document.getElementById('diff').value);
+        const P = parseFloat(document.getElementById('').value);
+        const Q = parseFloat(document.getElementById('diff').value);
         if (perpetuity) {
-          PV = "Diverges (arithmetic perpetuity not finite)";
-          FV = "Diverges";
+          PV = (P / i) + (P / Math.pow(i, 2));
+          FV = Infinity;
         } else {
-          let PVseries = 0, FVseries = 0;
-          for (let k=1;k<=n;k++) {
-            let payment = P + (k-1)*d;
-            PVseries += payment / Math.pow(1+i, k);
-            FVseries += payment * Math.pow(1+i, n-k);
-          }
-          PV = PVseries;
-          FV = FVseries;
+          PV = P * ((1 - Math.pow(1+i, -n)) / i) + Q * (((1 - Math.pow(1+i, -n)) / i) - n * Math.pow(1+i, -n)) / i;
+          FV = PV * Math.pow(1+i, n);
         }
       } else if (type === "geometric") {
         const P = parseFloat(document.getElementById('pmt').value);
-        const r = parseFloat(document.getElementById('ratio').value);
-        if (perpetuity) {
-          if (r < 1+i) {
-            PV = P / (1 - (1+r)/(1+i));
-            FV = "Infinity";
+        const k = parseFloat(document.getElementById('ratio').value);
+        if (!perpetuity) {
+          if (k == i) {
+            PV = n * P / (1+i);
+            FV = PV * Math.pow(1+i, n);
           } else {
-            PV = "Diverges";
-            FV = "Diverges";
+            PV = P * (1 - Math.pow((1+k) / (1+i), n)) / (i-k);
+            FV = PV * Math.pow(1+i, n);
           }
         } else {
-          let PVseries = 0, FVseries = 0;
-          for (let k=1;k<=n;k++) {
-            let payment = P * Math.pow(1+r, k-1);
-            PVseries += payment / Math.pow(1+i, k);
-            FVseries += payment * Math.pow(1+i, n-k);
+          if (k < i) {
+            PV = P / (i-k));
+            FV = Infinity;
+          } else {
+            PV = Infinity;
+            FV = Infinity;
           }
-          PV = PVseries;
-          FV = FVseries;
         }
       }
 
