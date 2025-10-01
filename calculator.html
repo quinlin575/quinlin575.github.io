@@ -113,7 +113,7 @@
       } else if (calcType.value === "geometric") {
         inputsDiv.innerHTML = `
           <label>First Payment (P): <input type="number" id="pmt"></label>
-          <label>Common Ratio Between Payments (k): <input type="number" step="0.01" id="ratio"></label>
+          <label>Growth Rate of Payments (k): <input type="number" step="0.01" id="ratio"></label>
           <label>Effective Interest Rate Per Period (i): <input type="number" step="0.001" id="rate"></label>
           <label>Number of Periods (n): <input type="number" id="n"></label>
           <label>Perpetuity</label>
@@ -181,7 +181,7 @@
       }
 
       // adjust for annuity due
-      if (annuityType === "due" && !perpetuity && typeof PV === "number" && typeof FV === "number") {
+      if (annuityType === "due") {
         PV *= (1+i);
         FV *= (1+i);
       }
