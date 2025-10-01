@@ -160,21 +160,22 @@
       } else if (type === "geometric") {
         const P = parseFloat(document.getElementById('pmt').value);
         const k = parseFloat(document.getElementById('ratio').value);
-        if (!perpetuity) {
-          if (k == i) {
-            PV = n * P / (1+i);
-            FV = PV * Math.pow(1+i, n);
-          } else {
-            PV = P * (1 - Math.pow((1+k) / (1+i), n)) / (i-k);
-            FV = PV * Math.pow(1+i, n);
-          }
-        } else {
+        if (perpetuity) {
           if (k < i) {
             PV = P / (i-k);
             FV = Infinity;
           } else {
             PV = Infinity;
             FV = Infinity;
+          }
+        }
+        else {
+            if (k == i) {
+            PV = n * P / (1+i);
+            FV = PV * Math.pow(1+i, n);
+          } else {
+            PV = P * (1 - Math.pow((1+k) / (1+i), n)) / (i-k);
+            FV = PV * Math.pow(1+i, n);
           }
         }
       }
