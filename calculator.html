@@ -204,7 +204,7 @@
       }
 
       // adjust for annuity due
-      if (annuityType === "due" && mainType.value !== "perpetuity") {
+      if (annuityType === "due") {
         PV *= (1+i);
         FV *= (1+i);
       }
