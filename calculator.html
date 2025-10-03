@@ -299,14 +299,20 @@
             if (solveFor === "principal") {
              // PV of annuity immediate
              const pvFactor = (1 - Math.pow(1+i, -n)) / i;
-             output = `Principal Amount: ${(A * pvFactor).toFixed(2)}`;
+             output = `Principal Amount: $${(A * pvFactor).toFixed(2)}`;
            } else if (solveFor === "payment") {
               const pvFactor = (1 - Math.pow(1+i, -n)) / i;
-             output = `Payment Per Period: ${(P / pvFactor).toFixed(2)}`;
+             output = `Payment Per Period: $${(P / pvFactor).toFixed(2)}`;
             } else if (solveFor === "periods") {
               const pvFactor = P / A;
              n = Math.log(1 - i * pvFactor) / Math.log(1 / (1+i));
-             output = `Number of Periods: ${n.toFixed(2)}`;
+             if (Math.abs(n - Math.round(n)) < .01) {
+              output = `Number of Periods with Level Payments: ${n.toFixed(2)}`;
+             } else {
+              let drop = (P - A*((1 - Math.pow(1+i, -1 * Math.floor(n))) / i)) * Math.pow(1+i, Math.floor(n) + 1);
+              let balloon = (P - A*((1 - Math.pow(1+i, -1 * Math.floor(n) - 1)) / i)) * Math.pow(1+i, Math.floor(n));
+              output = `The number of period is not an integer, you can pay back this loan with:\n ${(Math.floor(n)).toFixed()} Level Payments and a final drop payment of $${drop.toFixed(2)} \nor you can pay back this loan with:\n ${(Math.floor(n) - 1).toFixed()} Level Payments and a final balloon payment of $${balloon.toFixed(2)}`;
+             }
             } else if (solveFor === "rate") {
               // solving for i is nonlinear, need iteration (Newton-Raphson)
               let guess = 0.05;
@@ -330,8 +336,8 @@
         FV *= (1+i);
       }
 
-      result.innerHTML = `<strong>Present Value:</strong> ${typeof PV === "number" ? PV.toFixed(2) : PV} <br>
-                          <strong>Future Value:</strong> ${typeof FV === "number" ? FV.toFixed(2) : FV}`;
+      result.innerHTML = `<strong>Present Value:</strong> $${typeof PV === "number" ? PV.toFixed(2) : PV} <br>
+                          <strong>Future Value:</strong> $${typeof FV === "number" ? FV.toFixed(2) : FV}`;
     });
   </script>
 </body>
