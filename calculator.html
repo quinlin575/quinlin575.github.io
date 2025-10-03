@@ -57,6 +57,7 @@
     <label for="mainType">Choose a calculation:</label>
     <select id="mainType">
       <option value="">-- Select --</option>
+      <option value="interest">Interest Rate</option>
       <option value="annuity">Annuity</option>
       <option value="perpetuity">Perpetuity</option>
     </select>
@@ -105,7 +106,34 @@
           subType = subTypeSelect.value;
           showInputs();
         });
-      }
+      } else if (mainType.value === "interest") {
+        inputsDiv.innerHTML = `
+          <label for="fromComp">From Interest Rate, Annual Convertible:</label>
+          <select id="fromComp">
+            <option value="1">Annual</option>
+            <option value="2">Semi-Annual</option>
+            <option value="4">Quarterly</option>
+            <option value="12">Monthly</option>
+            <option value="52">Weekly</option>
+            <option value="365">Daily</option>
+            <option value="cont">Continuous</option>
+          </select>
+
+          <label>Nominal Interest Rate (%): <input type="number" step="0.0001" id="inputRate"></label>
+
+          <label for="toComp">To Interest Rate, Annual Convertible:</label>
+          <select id="toComp">
+            <option value="1">Annual</option>
+            <option value="2">Semi-Annual</option>
+            <option value="4">Quarterly</option>
+            <option value="12">Monthly</option>
+            <option value="52">Weekly</option>
+            <option value="365">Daily</option>
+            <option value="cont">Continuous</option>
+          </select>
+        `;
+    calcBtn.style.display = 'block';
+  }
     });
 
     function showInputs() {
@@ -201,7 +229,29 @@
             FV = PV * Math.pow(1+i, n);
           }
         }
-      }
+      } else if (mainType.value === "interest") {
+          const from = document.getElementById("fromComp").value;
+          const to = document.getElementById("toComp").value;
+          const r = parseFloat(document.getElementById("inputRate").value) / 100;
+
+          let eff; // effective annual rate
+
+          if (from === "cont") {
+            eff = Math.exp(r) - 1;
+          } else {
+            eff = Math.pow(1 + r / from, from) - 1;
+          }
+
+          let conv;
+          if (to === "cont") {
+            conv = Math.log(1 + eff);
+          } else {
+            conv = to * (Math.pow(1 + eff, 1 / to) - 1);
+          }
+
+          result.innerHTML = `<strong>Converted Rate:</strong> ${(conv * 100).toFixed(4)}%`;
+        }
+
 
       // adjust for annuity due
       if (annuityType === "due") {
