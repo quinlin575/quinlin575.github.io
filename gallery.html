@@ -102,8 +102,8 @@ button:hover {
         </div>
 
         <div class="slide-buttons">
-            <button onclick="changeSlide('post11', -1)">Previous</button>
-            <button onclick="changeSlide('post11', 1)">Next</button>
+            <button>Previous</button>
+            <button>Next</button>
         </div>
 
         <div class="description">
@@ -123,8 +123,8 @@ button:hover {
         </div>
 
         <div class="slide-buttons">
-            <button onclick="changeSlide('post10', -1)">Previous</button>
-            <button onclick="changeSlide('post10', 1)">Next</button>
+            <button>Previous</button>
+            <button>Next</button>
         </div>
 
         <div class="description">
@@ -158,8 +158,8 @@ button:hover {
         </div>
 
         <div class="slide-buttons">
-            <button onclick="changeSlide('post8', -1)">Previous</button>
-            <button onclick="changeSlide('post8', 1)">Next</button>
+            <button>Previous</button>
+            <button>Next</button>
         </div>
 
         <div class="description">
@@ -180,8 +180,8 @@ button:hover {
         </div>
 
         <div class="slide-buttons">
-            <button onclick="changeSlide('post7', -1)">Previous</button>
-            <button onclick="changeSlide('post7', 1)">Next</button>
+            <button>Previous</button>
+            <button>Next</button>
         </div>
 
         <div class="description">
@@ -202,8 +202,8 @@ button:hover {
         </div>
 
         <div class="slide-buttons">
-            <button onclick="changeSlide('post6', -1)">Previous</button>
-            <button onclick="changeSlide('post6', 1)">Next</button>
+            <button>Previous</button>
+            <button>Next</button>
         </div>
 
         <div class="description">
@@ -224,8 +224,8 @@ button:hover {
         </div>
 
         <div class="slide-buttons">
-            <button onclick="changeSlide('post5', -1)">Previous</button>
-            <button onclick="changeSlide('post5', 1)">Next</button>
+            <button>Previous</button>
+            <button>Next</button>
         </div>
 
         <div class="description">
@@ -251,8 +251,8 @@ button:hover {
         </div>
 
         <div class="slide-buttons">
-            <button onclick="changeSlide('post4', -1)">Previous</button>
-            <button onclick="changeSlide('post4', 1)">Next</button>
+            <button>Previous</button>
+            <button>Next</button>
         </div>
 
         <div class="description">
@@ -303,30 +303,36 @@ button:hover {
 <a href="index.html" class="back">⬅ Back to Home</a>
 
 <script>
-function changeSlide(postClass, direction) {
-    const slides = document.getElementsByClassName(postClass);
+document.querySelectorAll('.post').forEach(post => {
+    const slides = post.querySelectorAll('.slide');
     let currentIndex = 0;
 
-    for (let i = 0; i < slides.length; i++) {
-        if (slides[i].style.display !== "none") {
-            currentIndex = i;
-            slides[i].style.display = "none";
-            break;
-        }
+    if (slides.length > 0) {
+        slides.forEach((slide, i) => {
+            slide.style.display = i === 0 ? "block" : "none";
+        });
     }
 
-    let newIndex = currentIndex + direction;
+    const prevBtn = post.querySelector('.slide-buttons button:first-child');
+    const nextBtn = post.querySelector('.slide-buttons button:last-child');
 
-    if (newIndex < 0) {
-        newIndex = slides.length - 1;
-    }
-    if (newIndex >= slides.length) {
-        newIndex = 0;
-    }
+    if (prevBtn && nextBtn) {
 
-    slides[newIndex].style.display = "block";
-}
+        prevBtn.addEventListener('click', () => {
+            slides[currentIndex].style.display = "none";
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            slides[currentIndex].style.display = "block";
+        });
+
+        nextBtn.addEventListener('click', () => {
+            slides[currentIndex].style.display = "none";
+            currentIndex = (currentIndex + 1) % slides.length;
+            slides[currentIndex].style.display = "block";
+        });
+    }
+});
 </script>
+
 
 </body>
 </html>
